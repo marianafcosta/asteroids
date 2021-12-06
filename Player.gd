@@ -1,10 +1,14 @@
 extends Area2D
 
+export var acceleration = 200
+export var inertia = 100
+export var max_speed = 200
+export var angular_speed = 2 # NOTE: Radians
 
-export var speed = 100
-export var angular_speed = 1 # NOTE: Radians
-var direction = Vector2(0, 1)
 var screen_size
+
+var direction = Vector2(0, 1)
+var speed = 0
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -14,8 +18,15 @@ func _process(delta):
 	var should_move = Input.is_action_pressed("ui_up");
 	var rotation = 0;
 	
+	if Input.is_action_pressed("ui_up"):
+		speed += acceleration * delta
+	else:
+		speed -= inertia * delta
+		
+	speed = clamp(speed, 0, max_speed)
+	
 	if Input.is_action_pressed("ui_left"):
-		rotation = -(angular_speed * delta) # NOTE: Angle that it should rotate
+		rotation = -(angular_speed * delta) # NOTE: Angle that it should rotate by
 	if Input.is_action_pressed("ui_right"):
 		rotation = angular_speed * delta
 	
@@ -27,8 +38,8 @@ func _process(delta):
 	direction.x = old_x * cos(rotation) - old_y * sin(rotation)
 	direction.y = old_x * sin(rotation) + old_y * cos(rotation)
 	
-	if should_move:
-		velocity = direction.normalized() * speed
+	velocity = direction.normalized() * speed
+	if speed > 0:
 		position += velocity * delta
 		position.x = clamp(position.x, 0, screen_size.x)
 		position.y = clamp(position.y, 0, screen_size.y)
