@@ -15,7 +15,6 @@ func _ready():
 
 func _process(delta):
 	var velocity = Vector2()
-	var should_move = Input.is_action_pressed("ui_up");
 	var rotation = 0;
 	
 	if Input.is_action_pressed("ui_up"):
@@ -40,10 +39,24 @@ func _process(delta):
 	
 	velocity = direction.normalized() * speed
 	if speed > 0:
-		position += velocity * delta
-		position.x = clamp(position.x, 0, screen_size.x)
-		position.y = clamp(position.y, 0, screen_size.y)
-	
+		var new_position = position + velocity * delta
+		var sprite_half_width = self.get_node("Sprite").texture.get_width() / 2
+		var sprite_half_height = self.get_node("Sprite").texture.get_height() / 2
+		
+		if new_position.x < 0 - sprite_half_width:
+			position.x = screen_size.x + sprite_half_width
+		elif new_position.x > screen_size.x + sprite_half_width:
+			position.x = 0 - sprite_half_width
+		else:
+			position.x = new_position.x
+			
+		if new_position.y < 0 - sprite_half_height:
+			position.y = screen_size.y + sprite_half_height
+		elif new_position.y > screen_size.y + sprite_half_height:
+			position.y = 0 - sprite_half_height
+		else:
+			position.y = new_position.y
+		
 	# NOTES
 	# -> The player always starts turned down
 	# -> So the initial direction will always be (0,1)
