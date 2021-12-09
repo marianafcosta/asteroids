@@ -7,8 +7,19 @@ export var angular_speed = 2 # NOTE: Radians
 
 var screen_size
 
-var direction = Vector2(0, 1)
+var direction = Vector2(0, 1) # NOTE: Facing down
 var speed = 0
+var projectiles = []
+
+var projectile_scene = preload("res://Projectile.tscn")
+
+func shoot():
+	var projectile_instance = projectile_scene.instance()
+	projectile_instance.init(direction)
+	get_tree().get_root().add_child(projectile_instance)
+	projectile_instance.global_position.x = position.x
+	projectile_instance.global_position.y = position.y
+	projectiles.append(projectile_instance)
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -56,13 +67,8 @@ func _process(delta):
 			position.y = 0 - sprite_half_height
 		else:
 			position.y = new_position.y
-		
-	# NOTES
-	# -> The player always starts turned down
-	# -> So the initial direction will always be (0,1)
-	# -> a = delta_v / delta_t
-	# -> delta_v = v - v0
-	# -> v = v0 + a * delta_t
-	# -> The direction is always a unit vector
-	# -> Need to check out rotational movement equations
 	
+	if Input.is_action_just_pressed("ui_accept"):
+		# TODO: Shoot
+		shoot()
+		pass
