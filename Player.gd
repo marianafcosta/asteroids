@@ -10,8 +10,17 @@ var screen_size
 var direction = Vector2(0, 1) # NOTE: Facing down
 var speed = 0
 var projectiles = []
+var lives = 3
 
 var projectile_scene = preload("res://Projectile.tscn")
+
+func respawn():
+	position.y = screen_size.y / 2
+	position.x = screen_size.x / 2
+	speed = 0
+	var initial_direction = Vector2(0, 1)
+	self.rotate(direction.angle_to(initial_direction))
+	direction = initial_direction
 
 func shoot():
 	var projectile_instance = projectile_scene.instance()
@@ -72,3 +81,11 @@ func _process(delta):
 		# TODO: Shoot
 		shoot()
 		pass
+
+
+func _on_Player_area_entered(area):
+	lives -= 1
+	if (lives <= 0):
+		self.queue_free()
+		# TODO: Signal Root that the game is over
+	respawn()
