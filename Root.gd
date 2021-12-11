@@ -2,16 +2,11 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var asteroid = self.get_node("Asteroid")
-	asteroid.global_position.x = 100
-	asteroid.global_position.y = 100
-	
-	print("hi")
-	
-	print(asteroid.position.x)
-	print(asteroid.global_position.x)
-
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+func _on_Player_game_over():
+	print("Game over!")

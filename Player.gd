@@ -1,5 +1,7 @@
 extends Area2D
 
+signal game_over
+
 export var acceleration = 200
 export var inertia = 100
 export var max_speed = 200
@@ -86,6 +88,7 @@ func _process(delta):
 func _on_Player_area_entered(area):
 	lives -= 1
 	if (lives <= 0):
+		emit_signal("game_over")
 		self.queue_free()
 		# TODO: Signal Root that the game is over
 	respawn()
