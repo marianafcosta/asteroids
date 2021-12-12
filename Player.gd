@@ -1,6 +1,7 @@
 extends Area2D
 
-signal game_over
+signal on_game_over
+signal on_life_lost
 
 export var acceleration = 200
 export var inertia = 100
@@ -34,6 +35,8 @@ func shoot():
 
 func _ready():
 	screen_size = get_viewport_rect().size
+	print(get_tree().root.get_node("Root/UI"))
+	self.connect("on_life_lost", get_tree().root.get_node("Root/UI"), "_on_Player_life_lost")
 
 func _process(delta):
 	var velocity = Vector2()
@@ -80,15 +83,15 @@ func _process(delta):
 			position.y = new_position.y
 	
 	if Input.is_action_just_pressed("ui_accept"):
-		# TODO: Shoot
 		shoot()
 		pass
 
 
 func _on_Player_area_entered(area):
 	lives -= 1
+	emit_signal("on_life_lost", lives)
 	if (lives <= 0):
-		emit_signal("game_over")
+		emit_signal("on_game_over")
 		self.queue_free()
 		# TODO: Signal Root that the game is over
 	respawn()
