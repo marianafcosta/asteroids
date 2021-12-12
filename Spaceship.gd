@@ -12,7 +12,7 @@ var rng = RandomNumberGenerator.new()
 
 func shoot():
 	var projectile_instance = projectile_scene.instance()
-	projectile_instance.init(direction)
+	projectile_instance.init(Vector2(rng.randf_range(-1, 1), rng.randf_range(-1, 1)).normalized())
 	get_tree().get_root().add_child(projectile_instance)
 	projectile_instance.global_position.x = position.x
 	projectile_instance.global_position.y = position.y
