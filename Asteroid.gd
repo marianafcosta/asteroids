@@ -1,6 +1,7 @@
 extends Area2D
 
-signal asteroid_hit
+# TODO: Signal root to add to the score
+signal on_destroyed
 
 var speed = 50
 var direction
@@ -18,6 +19,7 @@ func _ready():
 	rng.randomize()
 	direction = Vector2(rng.randf_range(-1, 1), rng.randf_range(-1, 1)).normalized()
 	screen_size = get_viewport_rect().size
+	self.connect("on_destroyed", get_tree().root.get_child(0), "_on_Asteroid_destroyed")
 
 func _process(delta):
 	var velocity = direction * speed
@@ -27,4 +29,5 @@ func _process(delta):
 		self.queue_free()
 
 func _on_Asteroid_area_entered(area):
+	emit_signal("on_destroyed")
 	self.queue_free()
