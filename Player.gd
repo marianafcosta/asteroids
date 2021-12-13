@@ -36,6 +36,7 @@ func shoot():
 func _ready():
 	screen_size = get_viewport_rect().size
 	self.connect("on_life_lost", get_tree().root.get_node("Root/UI"), "_on_Player_life_lost")
+	self.connect("on_game_over", get_tree().root.get_node("Root/UI"), "_on_Player_game_over")
 
 func _process(delta):
 	var velocity = Vector2()
@@ -91,5 +92,5 @@ func _on_Player_area_entered(area):
 	if (lives <= 0):
 		emit_signal("on_game_over")
 		self.queue_free()
-		# TODO: Signal Root that the game is over
+		
 	respawn()

@@ -59,3 +59,14 @@ text = "Lives"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="GameOver" type="Label" parent="UI"]
+visible = false
+margin_left = 460.0
+margin_top = 275.0
+margin_right = 534.0
+margin_bottom = 289.0
+text = "Game over!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
