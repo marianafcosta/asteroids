@@ -6,6 +6,7 @@ signal on_destroyed
 var speed = 50
 var direction
 var life = 3
+var first_time_out_of_bounds = true
 
 var screen_size
 
@@ -21,9 +22,12 @@ func shoot():
 	projectile_instance.global_position.y = position.y
 
 func out_of_bounds(x, y):
-	var sprite_half_width = self.get_node("Sprite").texture.get_width() / 2
-	var sprite_half_height = self.get_node("Sprite").texture.get_height() / 2
-	return (x > screen_size.x + sprite_half_width || x < -sprite_half_width || y > screen_size.y + sprite_half_height || y < -sprite_half_height)
+	var sprite_width = self.get_node("Sprite").texture.get_width()
+	var sprite_height = self.get_node("Sprite").texture.get_height()
+	var is_out_of_bounds = x > screen_size.x + sprite_width || x < -sprite_width || y > screen_size.y + sprite_height || y < -sprite_height
+	if (first_time_out_of_bounds):
+		first_time_out_of_bounds = false
+	return is_out_of_bounds
 
 func _ready():
 	rng.randomize()
@@ -38,7 +42,7 @@ func _process(delta):
 	var velocity = direction * speed
 	position += velocity * delta
 	
-	if (out_of_bounds(position.x, position.y)):
+	if (out_of_bounds(position.x, position.y) && !first_time_out_of_bounds):
 		self.queue_free()
 
 func _on_Spaceship_area_entered(_area):

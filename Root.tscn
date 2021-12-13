@@ -10,7 +10,7 @@
 script = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 46, 64 )
+position = Vector2( 482, 262 )
 
 [node name="EnemySpawner" parent="." instance=ExtResource( 4 )]
 script = ExtResource( 5 )
