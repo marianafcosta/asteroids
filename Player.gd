@@ -35,7 +35,6 @@ func shoot():
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	print(get_tree().root.get_node("Root/UI"))
 	self.connect("on_life_lost", get_tree().root.get_node("Root/UI"), "_on_Player_life_lost")
 
 func _process(delta):
@@ -84,7 +83,6 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("ui_accept"):
 		shoot()
-		pass
 
 
 func _on_Player_area_entered(area):

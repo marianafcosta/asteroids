@@ -50,4 +50,3 @@ func _on_Spaceship_area_entered(_area):
 func _on_Timer_timeout():
 	$Timer.start()
 	shoot()
-	pass # Replace with function body.

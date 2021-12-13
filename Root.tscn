@@ -19,13 +19,43 @@ script = ExtResource( 5 )
 script = ExtResource( 2 )
 
 [node name="Lives" type="Label" parent="UI"]
-margin_left = 18.0
-margin_top = 12.0
-margin_right = 58.0
-margin_bottom = 26.0
-text = "Lives"
-align = 1
+margin_left = 65.0
+margin_top = 14.0
+margin_right = 88.0
+margin_bottom = 28.0
+text = "3"
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Label" parent="UI"]
+margin_left = 65.0
+margin_top = 33.0
+margin_right = 88.0
+margin_bottom = 47.0
+text = "0"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LivesLabel" type="Label" parent="UI"]
+margin_left = 23.0
+margin_top = 33.0
+margin_right = 63.0
+margin_bottom = 47.0
+text = "Score"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+margin_left = 24.0
+margin_top = 14.0
+margin_right = 64.0
+margin_bottom = 28.0
+text = "Lives"
 __meta__ = {
 "_edit_use_anchors_": false
 }
