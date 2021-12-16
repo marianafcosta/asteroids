@@ -1,15 +1,21 @@
 extends Area2D
 
-# TODO: Signal root to add to the score
 signal on_destroyed
+
+var asteroid_scene = load("res://Asteroid.tscn")
 
 var speed = 50
 var direction
 var first_time_out_of_bounds = true
+var variation = 3 # NOTE: Size of the asteroid, when it gets to 0, it doesn't duplicate when destroyed
 
 var screen_size
 
 var rng = RandomNumberGenerator.new()
+
+func init(_variation):
+	variation = _variation
+	set_scale(Vector2(variation, variation))
 
 func get_initial_direction():
 	var center_of_screen = Vector2(rng.randf_range((screen_size.x / 2) - 200, (screen_size.x / 2) + 200), rng.randf_range((screen_size.y / 2) - 200, (screen_size.y / 2) + 200))
@@ -59,7 +65,8 @@ func out_of_bounds(x, y):
 func _ready():
 	rng.randomize()
 	screen_size = get_viewport_rect().size
-	position = get_spawn_point()
+	if (variation == 3):
+		position = get_spawn_point()
 	direction = get_initial_direction()
 	self.connect("on_destroyed", get_tree().root.get_child(0), "_on_Asteroid_destroyed")
 
@@ -72,4 +79,17 @@ func _process(delta):
 
 func _on_Asteroid_area_entered(area):
 	emit_signal("on_destroyed")
+	if (variation > 1):
+		# NOTE: I can emit a signal with an array of new instances to also keep track of the smaller asteroids
+		var enemy_spawner = get_tree().get_root().get_node("Root/EnemySpawner")
+		var asteroid_instance_1 = asteroid_scene.instance()
+		var asteroid_instance_2 = asteroid_scene.instance()
+		asteroid_instance_1.init(variation - 1)
+		asteroid_instance_2.init(variation - 1)
+		enemy_spawner.add_child(asteroid_instance_1)
+		enemy_spawner.add_child(asteroid_instance_2)
+		asteroid_instance_1.global_position = position
+		asteroid_instance_2.global_position = position
+		asteroid_instance_1.direction = Vector2(rng.randf_range(-1, 1), rng.randf_range(-1,1)).normalized()
+		asteroid_instance_2.direction = Vector2(rng.randf_range(-1, 1), rng.randf_range(-1,1)).normalized()
 	self.queue_free()

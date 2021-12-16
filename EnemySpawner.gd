@@ -24,7 +24,7 @@ func _ready():
 	screen_size = get_viewport_rect().size
 	
 	rng.randomize()
-	for n in range(10):
+	for n in range(5):
 		if (n < 2):
 			spawn_spaceship()
 		spawn_asteroid()

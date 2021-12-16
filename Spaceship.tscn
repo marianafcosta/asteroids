@@ -24,7 +24,7 @@ scale = Vector2( 4, 4 )
 texture = ExtResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 4.0
 
 [connection signal="area_entered" from="." to="." method="_on_Spaceship_area_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

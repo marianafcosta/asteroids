@@ -15,6 +15,7 @@ var projectile_scene = preload("res://EnemyProjectile.tscn")
 var rng = RandomNumberGenerator.new()
 
 func get_initial_direction():
+	# NOTE: Change this to be any direction pointing to any point in the screen (to make it easier)
 	var center_of_screen = Vector2(rng.randf_range((screen_size.x / 2) - 20, (screen_size.x / 2) + 20), rng.randf_range((screen_size.y / 2) - 20, (screen_size.y / 2) + 20))
 	return (center_of_screen - position).normalized()
 
