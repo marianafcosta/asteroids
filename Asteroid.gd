@@ -6,7 +6,6 @@ var asteroid_scene = load("res://Asteroid.tscn")
 
 var speed = 50
 var direction
-var first_time_out_of_bounds = true
 var variation = 3 # NOTE: Size of the asteroid, when it gets to 0, it doesn't duplicate when destroyed
 
 var screen_size
@@ -57,10 +56,7 @@ func get_spawn_point():
 func out_of_bounds(x, y):
 	var sprite_width = self.get_node("Sprite").texture.get_width()
 	var sprite_height = self.get_node("Sprite").texture.get_height()
-	var is_out_of_bounds = x > screen_size.x + sprite_width || x < -sprite_width || y > screen_size.y + sprite_height || y < -sprite_height
-	if (first_time_out_of_bounds):
-		first_time_out_of_bounds = false
-	return is_out_of_bounds
+	return x > screen_size.x + sprite_width || x < -sprite_width || y > screen_size.y + sprite_height || y < -sprite_height
 
 func _ready():
 	rng.randomize()
@@ -72,10 +68,26 @@ func _ready():
 
 func _process(delta):
 	var velocity = direction * speed
-	position += velocity * delta
+	var new_position = position + velocity * delta
+	var sprite_width = self.get_node("Sprite").texture.get_width()
+	var sprite_height = self.get_node("Sprite").texture.get_height()
 	
-	if (out_of_bounds(position.x, position.y) && !first_time_out_of_bounds):
-		self.queue_free()
+	if (out_of_bounds(new_position.x, new_position.y)):
+		if new_position.x < 0 - sprite_width:
+			position.x = screen_size.x + sprite_width
+		elif new_position.x > screen_size.x + sprite_width:
+			position.x = 0 - sprite_width
+		else:
+			position.x = new_position.x
+			
+		if new_position.y < 0 - sprite_height:
+			position.y = screen_size.y + sprite_height
+		elif new_position.y > screen_size.y + sprite_height:
+			position.y = 0 - sprite_height
+		else:
+			position.y = new_position.y
+	else:
+		position = new_position
 
 func _on_Asteroid_area_entered(area):
 	emit_signal("on_destroyed")
