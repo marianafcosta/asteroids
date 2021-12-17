@@ -6,7 +6,6 @@ signal on_destroyed
 var speed = 50
 var direction
 var life = 3
-var first_time_out_of_bounds = true
 
 var screen_size
 
@@ -63,10 +62,7 @@ func shoot():
 func out_of_bounds(x, y):
 	var sprite_width = self.get_node("Sprite").texture.get_width()
 	var sprite_height = self.get_node("Sprite").texture.get_height()
-	var is_out_of_bounds = x > screen_size.x + sprite_width || x < -sprite_width || y > screen_size.y + sprite_height || y < -sprite_height
-	if (first_time_out_of_bounds):
-		first_time_out_of_bounds = false
-	return is_out_of_bounds
+	return x > screen_size.x + sprite_width || x < -sprite_width || y > screen_size.y + sprite_height || y < -sprite_height
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -79,10 +75,26 @@ func _ready():
 
 func _process(delta):
 	var velocity = direction * speed
-	position += velocity * delta
+	var new_position = position + velocity * delta
+	var sprite_width = self.get_node("Sprite").texture.get_width()
+	var sprite_height = self.get_node("Sprite").texture.get_height()
 	
-	if (out_of_bounds(position.x, position.y) && !first_time_out_of_bounds):
-		self.queue_free()
+	if (out_of_bounds(new_position.x, new_position.y)):
+		if new_position.x < 0 - sprite_width:
+			position.x = screen_size.x + sprite_width
+		elif new_position.x > screen_size.x + sprite_width:
+			position.x = 0 - sprite_width
+		else:
+			position.x = new_position.x
+			
+		if new_position.y < 0 - sprite_height:
+			position.y = screen_size.y + sprite_height
+		elif new_position.y > screen_size.y + sprite_height:
+			position.y = 0 - sprite_height
+		else:
+			position.y = new_position.y
+	else:
+		position = new_position
 
 func _on_Spaceship_area_entered(_area):
 	life -= 1
