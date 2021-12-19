@@ -12,6 +12,7 @@ func update_lives(lives):
 	
 func toggleGameOverMsg(show):
 	$GameOver.visible = show
+	$Restart.visible = show
 
 func _on_Player_life_lost(lives):
 	update_lives(lives)
@@ -21,3 +22,7 @@ func _on_Root_score_change(score):
 
 func _on_Player_game_over():
 	toggleGameOverMsg(true)
+
+func _on_Restart_pressed():
+	# TODO
+	print("Game restarted")

@@ -70,3 +70,16 @@ text = "Game over!"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Restart" type="Button" parent="UI"]
+visible = false
+margin_left = 464.0
+margin_top = 313.0
+margin_right = 521.0
+margin_bottom = 333.0
+text = "Restart"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="UI/Restart" to="UI" method="_on_Restart_pressed"]
