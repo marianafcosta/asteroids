@@ -1,6 +1,7 @@
 extends Area2D
 
 signal on_destroyed
+signal on_children_spawned
 
 var asteroid_scene = load("res://Asteroid.tscn")
 
@@ -19,6 +20,21 @@ func init(_variation):
 func get_initial_direction():
 	var center_of_screen = Vector2(rng.randf_range((screen_size.x / 2) - 200, (screen_size.x / 2) + 200), rng.randf_range((screen_size.y / 2) - 200, (screen_size.y / 2) + 200))
 	return (center_of_screen - position).normalized()
+
+func spawn_child_asteroids():
+	var enemy_spawner = get_tree().get_root().get_node("Root/EnemySpawner")
+	var asteroid_instance_1 = asteroid_scene.instance()
+	var asteroid_instance_2 = asteroid_scene.instance()
+	asteroid_instance_1.init(variation - 1)
+	asteroid_instance_2.init(variation - 1)
+	# TODO: Move this logic to the enemy spawner?
+	enemy_spawner.add_child(asteroid_instance_1)
+	enemy_spawner.add_child(asteroid_instance_2)
+	asteroid_instance_1.global_position = position
+	asteroid_instance_2.global_position = position
+	asteroid_instance_1.direction = Vector2(rng.randf_range(-1, 1), rng.randf_range(-1,1)).normalized()
+	asteroid_instance_2.direction = Vector2(rng.randf_range(-1, 1), rng.randf_range(-1,1)).normalized()
+	emit_signal("on_children_spawned", 2)
 
 func get_spawn_point():
 	var x
@@ -65,6 +81,8 @@ func _ready():
 		position = get_spawn_point()
 	direction = get_initial_direction()
 	self.connect("on_destroyed", get_tree().root.get_child(0), "_on_Asteroid_destroyed")
+	self.connect("on_destroyed", get_tree().get_root().get_node("Root/EnemySpawner"), "_on_Asteroid_destroyed")
+	self.connect("on_children_spawned", get_tree().get_root().get_node("Root/EnemySpawner"), "_on_Asteroid_children_spawned")
 
 func _process(delta):
 	var velocity = direction * speed
@@ -92,16 +110,5 @@ func _process(delta):
 func _on_Asteroid_area_entered(area):
 	emit_signal("on_destroyed")
 	if (variation > 1):
-		# NOTE: I can emit a signal with an array of new instances to also keep track of the smaller asteroids
-		var enemy_spawner = get_tree().get_root().get_node("Root/EnemySpawner")
-		var asteroid_instance_1 = asteroid_scene.instance()
-		var asteroid_instance_2 = asteroid_scene.instance()
-		asteroid_instance_1.init(variation - 1)
-		asteroid_instance_2.init(variation - 1)
-		enemy_spawner.add_child(asteroid_instance_1)
-		enemy_spawner.add_child(asteroid_instance_2)
-		asteroid_instance_1.global_position = position
-		asteroid_instance_2.global_position = position
-		asteroid_instance_1.direction = Vector2(rng.randf_range(-1, 1), rng.randf_range(-1,1)).normalized()
-		asteroid_instance_2.direction = Vector2(rng.randf_range(-1, 1), rng.randf_range(-1,1)).normalized()
+		spawn_child_asteroids()
 	self.queue_free()
