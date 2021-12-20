@@ -34,9 +34,11 @@ func shoot():
 	projectiles.append(projectile_instance)
 
 func _ready():
+	# TODO: Rename this signal to be more generic
 	screen_size = get_viewport_rect().size
 	self.connect("on_life_lost", get_tree().root.get_node("Root/UI"), "_on_Player_life_lost")
 	self.connect("on_game_over", get_tree().root.get_node("Root/UI"), "_on_Player_game_over")
+	emit_signal("on_life_lost", lives)
 
 func _process(delta):
 	var velocity = Vector2()

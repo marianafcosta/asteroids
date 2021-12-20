@@ -82,4 +82,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[connection signal="pressed" from="UI/Restart" to="." method="_on_Restart_pressed"]
+[connection signal="pressed" from="UI/Restart" to="EnemySpawner" method="_on_Restart_pressed"]
 [connection signal="pressed" from="UI/Restart" to="UI" method="_on_Restart_pressed"]

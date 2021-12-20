@@ -22,15 +22,17 @@ func spawn_spaceship():
 	var spaceship_instance = spaceship_scene.instance()
 	self.add_child(spaceship_instance)
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	screen_size = get_viewport_rect().size
-	
+func init():
 	rng.randomize()
 	for n in range(5):
 		if (n < 2):
 			spawn_spaceship()
 		spawn_asteroid()
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	screen_size = get_viewport_rect().size
+	init()
 	
 
 func _on_Asteroids_children_spawned(instances):
@@ -46,3 +48,11 @@ func _process(delta):
 		
 	if asteroids < 5:
 		spawn_asteroid()
+
+func _on_Restart_pressed():
+	var children = self.get_children()
+	for child_idx in range(0, children.size() - 1):
+		children[child_idx].queue_free()
+	asteroids = 5
+	spaceships = 2
+	init()
