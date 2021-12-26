@@ -3,7 +3,9 @@ extends Node2D
 signal on_score_change
 
 var player_scene = preload("res://Player.tscn")
+var enemy_spawner_scene = preload("res://EnemySpawner.tscn")
 var screen_size
+var enemy_spawner_instance
 
 var score = 0;
 
@@ -28,3 +30,18 @@ func _on_Restart_pressed():
 	var player_instance = player_scene.instance()
 	player_instance.global_position = screen_size / 2
 	self.add_child(player_instance)
+
+func _on_Play_pressed():
+	score = 0
+	emit_signal("on_score_change", score)
+	var player_instance = player_scene.instance()
+	enemy_spawner_instance = enemy_spawner_scene.instance()
+	player_instance.global_position = screen_size / 2
+	self.add_child(player_instance)
+	self.add_child(enemy_spawner_instance)
+
+func _on_Exit_pressed():
+	get_tree().quit()
+
+func _on_BackToMainMenu_pressed():
+	enemy_spawner_instance.queue_free()

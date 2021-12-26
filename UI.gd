@@ -13,6 +13,7 @@ func update_lives(lives):
 func toggleGameOverMsg(show):
 	$GameOver.visible = show
 	$Restart.visible = show
+	$BackToMainMenu.visible = show
 
 func _on_Player_life_lost(lives):
 	print("hi")
@@ -24,6 +25,14 @@ func _on_Root_score_change(score):
 func _on_Player_game_over():
 	toggleGameOverMsg(true)
 
-
 func _on_Restart_pressed():
 	toggleGameOverMsg(false)
+
+func _on_BackToMainMenu_pressed():
+	$GameOver.visible = false
+	$Restart.visible = false
+	$BackToMainMenu.visible = false
+	$Menu.visible = true
+
+func _on_Play_pressed():
+	$Menu.visible = false

@@ -29,16 +29,17 @@ func init():
 			spawn_spaceship()
 		spawn_asteroid()
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
+	get_tree().get_root().get_node("Root/UI/Restart").connect("pressed", self, "_on_Restart_pressed")
+	print("hi from enemy spawner")
 	init()
-	
 
-func _on_Asteroids_children_spawned(instances):
+func _on_Asteroid_children_spawned(instances):
 	asteroids += instances
 
 func _on_Asteroid_destroyed():
+	# TODO: Possible race condition because of the method above
 	asteroids -= 1
 	print(asteroids)
 
@@ -51,6 +52,8 @@ func _process(delta):
 
 func _on_Restart_pressed():
 	var children = self.get_children()
+	print("number of asteroids")
+	print(children.size())
 	for child_idx in range(0, children.size() - 1):
 		children[child_idx].queue_free()
 	asteroids = 5
