@@ -101,8 +101,13 @@ func _on_Spaceship_area_entered(_area):
 	life -= 1
 	if (life <= 0):
 		emit_signal("on_destroyed")
+		$Sprite.visible = false
+		$ExplosionSprite.visible = true
 		$ExplosionSound.play()
+		$ExplosionAnimation.play("Explode")
 		# TODO Deactivate shooting when sound is playing
+		yield($ExplosionAnimation, "animation_finished")
+		$ExplosionSprite.visible = false
 		yield($ExplosionSound, "finished")
 		self.queue_free()
 

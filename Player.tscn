@@ -1,12 +1,13 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://pitrizzo-SpaceShip-gpl3-opengameart-24x24.png" type="Texture" id=1]
+[ext_resource path="res://space_shooter_pack/Graphics/spritesheets/ship.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://fire.wav" type="AudioStream" id=3]
 [ext_resource path="res://thrust.wav" type="AudioStream" id=4]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 22, 22 )
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 13.0
+height = 23.0
 
 [node name="Player" type="Area2D"]
 collision_mask = 2
@@ -16,8 +17,12 @@ script = ExtResource( 2 )
 rotation = 3.14159
 scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
+hframes = 5
+vframes = 2
+frame = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 1 )
 shape = SubResource( 1 )
 
 [node name="ProjectileSound" type="AudioStreamPlayer2D" parent="."]
