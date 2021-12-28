@@ -32,6 +32,7 @@ func shoot():
 	projectile_instance.global_position.x = position.x
 	projectile_instance.global_position.y = position.y
 	projectiles.append(projectile_instance)
+	$ProjectileSound.play()
 
 func _ready():
 	# TODO: Rename this signal to be more generic
@@ -46,7 +47,10 @@ func _process(delta):
 	
 	if Input.is_action_pressed("ui_up"):
 		speed += acceleration * delta
+		if (!$ThrustSound.playing):
+			$ThrustSound.play()
 	else:
+		$ThrustSound.stop()
 		speed -= inertia * delta
 		
 	speed = clamp(speed, 0, max_speed)

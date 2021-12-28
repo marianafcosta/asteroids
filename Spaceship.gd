@@ -58,6 +58,7 @@ func shoot():
 	get_tree().get_root().add_child(projectile_instance)
 	projectile_instance.global_position.x = position.x
 	projectile_instance.global_position.y = position.y
+	$ProjectileSound.play()
 
 func out_of_bounds(x, y):
 	var sprite_width = self.get_node("Sprite").texture.get_width()
@@ -100,6 +101,9 @@ func _on_Spaceship_area_entered(_area):
 	life -= 1
 	if (life <= 0):
 		emit_signal("on_destroyed")
+		$ExplosionSound.play()
+		# TODO Deactivate shooting when sound is playing
+		yield($ExplosionSound, "finished")
 		self.queue_free()
 
 func _on_Timer_timeout():

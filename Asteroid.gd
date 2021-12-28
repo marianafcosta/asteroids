@@ -108,7 +108,24 @@ func _process(delta):
 		position = new_position
 
 func _on_Asteroid_area_entered(area):
+	# TODO Play animations
+	# TODO The collisions in this frame are still detected, use something like a state machine to keep track of this?
+	# NOTE Apparently Godot doesn't like disabling collision shapes in signal methods
+	# https://www.reddit.com/r/godot/comments/aih2ce/having_problems_disabling_body_entered_signal/
+	$CollisionShape2D.call_deferred("set_disabled", true)
 	emit_signal("on_destroyed")
-	if (variation > 1):
-		spawn_child_asteroids()
-	self.queue_free()
+	match(variation):
+		3:
+			$LargeExplosionSound.play()
+			spawn_child_asteroids()
+			yield($LargeExplosionSound, "finished")
+			self.queue_free()
+		2:
+			$MediumExplosionSound.play()
+			spawn_child_asteroids()
+			yield($MediumExplosionSound, "finished")
+			self.queue_free()
+		1:
+			$SmallExplosionSound.play()
+			yield($SmallExplosionSound, "finished")
+			self.queue_free()
