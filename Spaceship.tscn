@@ -54,6 +54,7 @@ stream = ExtResource( 4 )
 anims/Explode = SubResource( 2 )
 
 [node name="ExplosionSprite" type="Sprite" parent="."]
+visible = false
 scale = Vector2( 2, 2 )
 texture = ExtResource( 5 )
 hframes = 5

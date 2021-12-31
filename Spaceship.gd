@@ -54,10 +54,12 @@ func get_spawn_point():
 	
 func shoot():
 	var projectile_instance = projectile_scene.instance()
-	projectile_instance.init(Vector2(rng.randf_range(-1, 1), rng.randf_range(-1, 1)).normalized())
+	var direction = Vector2(rng.randf_range(-1, 1), rng.randf_range(-1, 1)).normalized()
+	projectile_instance.init(direction)
 	get_tree().get_root().add_child(projectile_instance)
 	projectile_instance.global_position.x = position.x
 	projectile_instance.global_position.y = position.y
+	projectile_instance.look_at(direction)
 	$ProjectileSound.play()
 
 func out_of_bounds(x, y):

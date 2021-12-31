@@ -108,24 +108,42 @@ func _process(delta):
 		position = new_position
 
 func _on_Asteroid_area_entered(area):
-	# TODO Play animations
 	# TODO The collisions in this frame are still detected, use something like a state machine to keep track of this?
 	# NOTE Apparently Godot doesn't like disabling collision shapes in signal methods
 	# https://www.reddit.com/r/godot/comments/aih2ce/having_problems_disabling_body_entered_signal/
 	$CollisionShape2D.call_deferred("set_disabled", true)
+	$Sprite.visible = false
 	emit_signal("on_destroyed")
 	match(variation):
 		3:
 			$LargeExplosionSound.play()
+			$Sprite.visible = false
+			$ExplosionSprite.visible = true
 			spawn_child_asteroids()
+			$ExplosionAnimation.play("Explode")
+			yield($ExplosionAnimation, "animation_finished")
+			$ExplosionSprite.visible = false
 			yield($LargeExplosionSound, "finished")
 			self.queue_free()
 		2:
 			$MediumExplosionSound.play()
+			$Sprite.visible = false
+			$ExplosionSprite.visible = true
 			spawn_child_asteroids()
+			$ExplosionAnimation.play("Explode")
+			yield($ExplosionAnimation, "animation_finished")
+			$ExplosionSprite.visible = false
 			yield($MediumExplosionSound, "finished")
 			self.queue_free()
 		1:
 			$SmallExplosionSound.play()
+			$Sprite.visible = false
+			$ExplosionSprite.visible = true
+			$ExplosionAnimation.play("Explode")
+			# NOTE If the sound finishes first, the yield for the sound will never return
+			# TODO Change this logic so that the order of the yields don't matter
+			# Same for the above
+			yield($ExplosionAnimation, "animation_finished")
+			$ExplosionSprite.visible = false
 			yield($SmallExplosionSound, "finished")
 			self.queue_free()

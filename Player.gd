@@ -18,6 +18,8 @@ var lives = 3
 var projectile_scene = preload("res://Projectile.tscn")
 
 func respawn():
+	$Sprite.visible = true
+	$CollisionShape2D.disabled = false
 	position.y = screen_size.y / 2
 	position.x = screen_size.x / 2
 	speed = 0
@@ -95,6 +97,15 @@ func _process(delta):
 func _on_Player_area_entered(area):
 	lives -= 1
 	emit_signal("on_life_lost", lives)
+	$CollisionShape2D.call_deferred("set_disabled", true)
+	$Sprite.visible = false
+	$ExplosionSprite.visible = true
+	$ExplosionSound.play()
+	$ExplosionAnimation.play("Explosion")
+	# TODO Deactivate shooting when sound is playing
+	yield($ExplosionAnimation, "animation_finished")
+	$ExplosionSprite.visible = false
+	yield($ExplosionSound, "finished")
 	if (lives <= 0):
 		emit_signal("on_game_over")
 		self.queue_free()
