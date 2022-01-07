@@ -7,6 +7,7 @@
 script = ExtResource( 3 )
 
 [node name="UI" type="CanvasLayer" parent="."]
+pause_mode = 2
 script = ExtResource( 2 )
 
 [node name="Lives" type="Label" parent="UI"]
@@ -122,6 +123,23 @@ margin_top = 218.0
 margin_right = 562.0
 margin_bottom = 276.0
 text = "Asteroids"
+align = 1
+valign = 1
+
+[node name="PauseScreen" type="Control" parent="UI"]
+visible = false
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="Background" type="ColorRect" parent="UI/PauseScreen"]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 0.647059 )
+
+[node name="Text" type="Label" parent="UI/PauseScreen"]
+margin_right = 1024.0
+margin_bottom = 600.0
+text = "Pause (Press P to unpause)"
 align = 1
 valign = 1
 

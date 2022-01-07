@@ -5,7 +5,7 @@ signal on_children_spawned
 
 var asteroid_scene = load("res://Asteroid.tscn")
 
-var speed = 50
+var speed = 75
 var direction
 var variation = 3 # NOTE: Size of the asteroid, when it gets to 0, it doesn't duplicate when destroyed
 
@@ -18,7 +18,8 @@ func init(_variation):
 	set_scale(Vector2(variation, variation))
 
 func get_initial_direction():
-	var center_of_screen = Vector2(rng.randf_range((screen_size.x / 2) - 200, (screen_size.x / 2) + 200), rng.randf_range((screen_size.y / 2) - 200, (screen_size.y / 2) + 200))
+	# TODO Change this to a not point to the center of the screen
+	var center_of_screen = Vector2(rng.randf_range((screen_size.x / 2) - 300, (screen_size.x / 2) + 300), rng.randf_range((screen_size.y / 2) - 300, (screen_size.y / 2) + 300))
 	return (center_of_screen - position).normalized()
 
 func spawn_child_asteroids():

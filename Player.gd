@@ -3,10 +3,10 @@ extends Area2D
 signal on_game_over
 signal on_life_lost
 
-export var acceleration = 300
+export var acceleration = 600
 export var inertia = 100
 export var max_speed = 200
-export var angular_speed = 2 # NOTE: Radians
+export var angular_speed = 3 # NOTE: Radians
 
 var screen_size
 

@@ -4,6 +4,12 @@ func _ready():
 	$Lives.text = str(3)
 	$Score.text = str(0)
 
+func _process(delta):
+	if Input.is_action_just_pressed("ui_pause"):
+		var tree = get_tree()
+		tree.paused = !tree.paused
+		$PauseScreen.visible = tree.paused
+
 func update_score(score):
 	$Score.text = str(score)
 
